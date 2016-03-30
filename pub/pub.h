@@ -2,8 +2,10 @@
 #define __PUB_H__
 
 #include <vector>
-#include "msg.h"
+#include "BroadMessage.h"
 
+namespace goni 
+{
 class pubImpl;
 
 class pub
@@ -12,10 +14,12 @@ class pub
         pub();
         ~pub();
 
-        void publish(MessageSp msg);
+        void publish(BroadMessageSp msg);
 
     private:
         pubImpl* m_impl;
 };
+
+}
 
 #endif

@@ -10,9 +10,12 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 //#include <thread>
 #include <pthread.h>
-#include "msg.h"
+
+namespace goni 
+{
 
 class pubImpl
 {
@@ -118,8 +121,13 @@ class pubImpl
                             // socket event...
                             char buf[512];
                             bzero(buf, sizeof buf);
-                            read(m_clients[i-1], buf, sizeof buf);
-                            printf("read : %s \n", buf);
+                            int ret = read(m_clients[i-1], buf, sizeof buf);
+                            if (ret == 0) 
+                            {
+                                printf("socket %d disconnect.\n", fd[i].fd);
+                                m_clients.erase(std::remove(m_clients.begin(), m_clients.end(), fd[i].fd), m_clients.end());
+                                close(fd[i].fd);
+                            }
                         }
                     }
                 }
@@ -129,9 +137,9 @@ class pubImpl
     private:
         int m_serverFd;
         std::vector<int> m_clients;
-        //std::thread      m_thread;
         pthread_t       m_pid;
 };
 
+}
 
 #endif

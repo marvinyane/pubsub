@@ -1,10 +1,12 @@
-#include "msg.h"
 #include "pub.h"
+#include "StcBroadMessage.h"
+
+using namespace goni;
 
 int main()
 {
     pub p;
-    MessageSp msg(new Message("hello", 6));
+    BroadMessageSp msg(new StcBroadMessageTest("marvin", 26));
 
 
     for(int i = 0; i < 3; i++)

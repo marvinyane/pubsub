@@ -3,8 +3,14 @@
 
 #include <string>
 
-class subImpl;
+#include "BroadMessage.h"
+#include "BroadMessageList.h"
+#include "BroadMessageFactory.h"
 
+namespace goni 
+{
+
+class subImpl;
 class subHandler
 {
     public:
@@ -14,7 +20,7 @@ class subHandler
 class sub : public subHandler
 {
     public:
-        sub();
+        sub(BroadMessageFactorySp factory);
         ~sub();
 
         void subscribe(char* target);
@@ -23,6 +29,8 @@ class sub : public subHandler
 
     private:
         subImpl* m_impl;
+        BroadMessageFactorySp m_factory;
 };
 
+}
 #endif

@@ -12,6 +12,9 @@
 
 #include "sub.h"
 
+namespace goni
+{
+
 class subImpl
 {
     public:
@@ -80,7 +83,12 @@ class subImpl
                         {
                             m_handler->handleMessage(std::string(buf, len));
                         }
-                        else 
+                        else if (len == 0) 
+                        {
+                            printf("socket %d disconnected\n", fd[0].fd);
+                            break;
+                        }
+                        else
                         {
                             perror("read failed:");
                         }
@@ -96,5 +104,6 @@ class subImpl
         subHandler* m_handler;
 };
 
+}
 
 #endif
