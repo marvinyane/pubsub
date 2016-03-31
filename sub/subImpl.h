@@ -18,10 +18,11 @@ namespace goni
 class subImpl
 {
     public:
-        subImpl(subHandler* handler)
+        subImpl(BroadMessageFactorySp factory, subHandler* handler)
             : m_fd(-1)
             , m_pid(-1)
             , m_handler(handler)
+            , m_factory(factory)
         {
             m_fd = socket(AF_UNIX, SOCK_STREAM, 0);
         }
@@ -83,7 +84,8 @@ class subImpl
                         int len = read(fd[0].fd, buf, sizeof buf);
                         if (len > 0) 
                         {
-                            m_handler->handleMessage(std::string(buf, len));
+                            BroadMessageSp msg = m_factory->createBroadMessage(buf, len);
+                            m_handler->handleMessage(msg);
                         }
                         else if (len == 0) 
                         {
@@ -104,6 +106,7 @@ class subImpl
         int m_fd;
         pthread_t m_pid;
         subHandler* m_handler;
+        BroadMessageFactorySp m_factory;
 };
 
 }

@@ -7,9 +7,8 @@
 
 namespace goni 
 {
-sub::sub(BroadMessageFactorySp factory)
-    : m_impl(new subImpl(this))
-    , m_factory(factory)
+sub::sub(BroadMessageFactorySp factory, subHandler* handler)
+    : m_impl(new subImpl(factory, handler))
 {
 }
 
@@ -21,22 +20,6 @@ sub::~sub()
 void sub::subscribe(const char* target)
 {
     m_impl->subscribe(target);
-}
-
-void sub::handleMessage(std::string data)
-{
-    BroadMessageSp msg = m_factory->createBroadMessage((char*)data.data(), data.length());
-
-    int id = msg->getId();
-    switch(id)
-    {
-        case STC_BROADMESSAGE_TEST_1:
-        {
-            StcBroadMessageTest* testMsg = (StcBroadMessageTest*)msg.get();
-            printf("name is %s, age is %d\n", testMsg->getName().c_str(), testMsg->getAge());
-            break;
-        }
-    }
 }
 
 }

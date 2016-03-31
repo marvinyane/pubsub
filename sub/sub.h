@@ -13,22 +13,19 @@ class subImpl;
 class subHandler
 {
     public:
-        virtual void handleMessage(std::string data) = 0;
+        virtual void handleMessage(BroadMessageSp msg) = 0;
 };
 
-class sub : public subHandler
+class sub
 {
     public:
-        sub(BroadMessageFactorySp factory);
+        sub(BroadMessageFactorySp factory, subHandler* handler);
         ~sub();
 
         void subscribe(const char* target);
         
-        virtual void handleMessage(std::string data);
-
     private:
         subImpl* m_impl;
-        BroadMessageFactorySp m_factory;
 };
 
 }
