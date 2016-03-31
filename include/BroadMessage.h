@@ -11,19 +11,35 @@ class BroadMessageImpl;
 class BroadMessage
 {
     public:
-        BroadMessage(int id);
-        BroadMessage(int id, char* buf, int len);
+        BroadMessage(int id) 
+          : m_id(id)
+        {
+        }
 
-        virtual ~BroadMessage();
+        BroadMessage(int id, char* buf, int len)
+          : m_id(id)
+          , m_data(buf, len)
+        {
+        }
+
+        virtual ~BroadMessage() 
+        {
+        }
 
         int getId() 
         {
              return m_id;
         }
 
-        void setData(char* buf, int len);
+        void setData(char* buf, int len)
+        {
+            m_data = std::string(buf, len);
+        }
 
-        const std::string& getData();
+        const std::string& getData()
+        {
+            return m_data;
+        }
 
     protected:
         int m_id;

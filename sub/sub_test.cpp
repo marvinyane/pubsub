@@ -1,12 +1,12 @@
 #include "sub.h"
-#include "StcBroadMessage.h"
+#include "StcPubMessage.h"
 
 using namespace goni;
 
 int main()
 {
     sub s(std::make_shared<StcMessageFactory>());
-    s.subscribe("testPub1");
+    s.subscribe(STC_PUB_NAME);
 
     sleep(20);
 

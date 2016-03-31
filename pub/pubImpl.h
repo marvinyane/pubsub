@@ -20,17 +20,21 @@ namespace goni
 class pubImpl
 {
     public:
-        pubImpl()
+        pubImpl(const char* name)
           : m_serverFd(-1)
           , m_clients()
           , m_pid(-1)
+          , m_running(true)
+          , m_pubName(name)
         {
-            // create server socket
             m_serverFd = socket(AF_UNIX, SOCK_STREAM, 0);
             sockaddr_un addr;
             bzero(&addr, sizeof addr);
             addr.sun_family = AF_UNIX;
-            strcpy(addr.sun_path, "testPub1");
+            strcpy(addr.sun_path, name);
+
+            // delete file that going to bind
+            unlink(name);
 
             int ret = bind(m_serverFd, (struct sockaddr*)&addr, sizeof addr);
             if (ret < 0)
@@ -48,7 +52,11 @@ class pubImpl
 
         ~pubImpl()
         {
+            m_running = false;
+            pthread_join(m_pid, NULL);
             close(m_serverFd);
+
+            unlink("testPub1");
 
             for (auto it = m_clients.begin(); it != m_clients.end(); it++)
             {
@@ -61,7 +69,7 @@ class pubImpl
             for (auto it = m_clients.begin(); it != m_clients.end(); it++)
             {
                int len =write(*it, data.data(), data.length());
-               printf("write len is %d - total length %d \n", len, data.length());
+               printf("write len is %d - total length %d \n", len, (int)data.length());
             }
 
         }
@@ -70,12 +78,14 @@ class pubImpl
         {
             pubImpl* m_impl = (pubImpl*)args;
             m_impl->run();
+
+            return NULL;
         }
 
         void run()
         {
             printf("thread running....\n");
-            while (1)
+            while (m_running)
             {
                 struct pollfd *fd;
                 int count = m_clients.size() + 1;
@@ -92,7 +102,7 @@ class pubImpl
                     fd[i].events = POLLIN;
                 }
 
-                int ret = poll(fd, count, -1);
+                int ret = poll(fd, count, 500);
                 if (ret > 0)
                 {
                     printf("fd[0].revnts %d, pollin is %d\n", fd[0].revents, POLLIN);
@@ -138,6 +148,8 @@ class pubImpl
         int m_serverFd;
         std::vector<int> m_clients;
         pthread_t       m_pid;
+        bool        m_running;
+        std::string m_pubName;
 };
 
 }

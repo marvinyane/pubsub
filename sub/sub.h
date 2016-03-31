@@ -4,7 +4,6 @@
 #include <string>
 
 #include "BroadMessage.h"
-#include "BroadMessageList.h"
 #include "BroadMessageFactory.h"
 
 namespace goni 
@@ -23,7 +22,7 @@ class sub : public subHandler
         sub(BroadMessageFactorySp factory);
         ~sub();
 
-        void subscribe(char* target);
+        void subscribe(const char* target);
         
         virtual void handleMessage(std::string data);
 

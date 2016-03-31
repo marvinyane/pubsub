@@ -1,5 +1,5 @@
 #include "pub.h"
-#include "StcBroadMessage.h"
+#include "StcPubMessage.h"
 
 using namespace goni;
 

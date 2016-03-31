@@ -26,13 +26,13 @@ class subImpl
             m_fd = socket(AF_UNIX, SOCK_STREAM, 0);
         }
 
-        bool subscribe(char* target)
+        bool subscribe(const char* target)
         {
             struct sockaddr_un addr;
             bzero(&addr, sizeof addr);
 
             addr.sun_family = AF_UNIX;
-            strcpy(addr.sun_path, "testPub1");
+            strcpy(addr.sun_path, target);
 
             int ret = connect(m_fd, (struct sockaddr*)&addr, sizeof addr);
             if (ret < 0)
@@ -59,6 +59,8 @@ class subImpl
         {
             subImpl* impl = (subImpl*)args;
             impl->run();
+
+            return NULL;
         }
 
         void run()

@@ -3,6 +3,7 @@
 
 #include "sub.h"
 #include "subImpl.h"
+#include "StcPubMessage.h"
 
 namespace goni 
 {
@@ -17,7 +18,7 @@ sub::~sub()
     delete m_impl;
 }
 
-void sub::subscribe(char* target)
+void sub::subscribe(const char* target)
 {
     m_impl->subscribe(target);
 }

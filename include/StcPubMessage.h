@@ -6,9 +6,12 @@
 #include <memory>
 
 #include "BroadMessage.h"
-#include "BroadMessageList.h"
 #include "BroadMessageFactory.h"
 #include "script/StcBroadMessageTest_generated.h"
+
+#define STC_PUB_NAME            "testPub1"
+
+#define STC_BROADMESSAGE_TEST_1         (0x0001)
 
 namespace goni {
 

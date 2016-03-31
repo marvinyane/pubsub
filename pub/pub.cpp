@@ -1,11 +1,12 @@
 #include "pub.h"
 #include "pubImpl.h"
+#include "StcPubMessage.h"
 
 namespace goni 
 {
 pub::pub()
 {
-    m_impl = new pubImpl();
+    m_impl = new pubImpl(STC_PUB_NAME);
 }
 
 void pub::publish(BroadMessageSp msg)
